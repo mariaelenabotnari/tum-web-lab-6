@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './style.css';
 import Sidebar from './components/Sidebar';
 import TopBar from './components/TopBar';
@@ -6,16 +6,18 @@ import MovieGrid from './components/MovieGrid';
 import Pagination from './components/Pagination';
 import AddMovieModal from './components/AddMovieModal';
 import { useMovies } from './hooks/useMovies';
+import CommentModal from './components/CommentModal';
+import ViewCommentsModal from './components/ViewCommentsModal';
 import { TMDB_GENRES } from './constants/tmdbGenres';
 
 function App() {
-    const { movies, toggleFavorite, addMovie } = useMovies();
+    const { movies, toggleFavorite, addMovie, addComment } = useMovies();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [topSearchQuery, setTopSearchQuery] = useState('');
 
     const [currentPage, setCurrentPage] = useState(1);
-    const moviesPerPage = 6;
+    const [moviesPerPage, setMoviesPerPage] = useState(6);
 
     const [activeTab, setActiveTab] = useState('all');
     const [isDarkMode, setIsDarkMode] = useState(localStorage.getItem('theme') === 'dark');
@@ -33,13 +35,35 @@ function App() {
     const currentMovies = filteredMovies.slice(indexOfFirst, indexOfLast);
     const totalPages = Math.ceil(filteredMovies.length / moviesPerPage);
 
+    const [commentMovie, setCommentMovie] = useState(null);
+    const [viewMovie, setViewMovie] = useState(null);
+
+    const liveCommentMovie = movies.find(m => m.id === commentMovie?.id);
+    const liveViewMovie = movies.find(m => m.id === viewMovie?.id);
+
     useEffect(() => {
         document.body.className = isDarkMode ? 'dark-theme' : '';
         localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
     }, [isDarkMode]);
 
+    const gridRef = useRef(null);
+
+    useEffect(() => {
+        const calculateRows = () => {
+            if (gridRef.current) {
+                const gridWidth = gridRef.current.offsetWidth;
+                const columns = Math.floor(gridWidth / 330);
+                setMoviesPerPage(Math.max(columns, 1) * 2);
+            }
+        };
+        const resizeObserver = new ResizeObserver(calculateRows);
+        if (gridRef.current) resizeObserver.observe(gridRef.current);
+        calculateRows();
+        return () => resizeObserver.disconnect();
+    }, []);
+
     return (
-        <div className="dashboard-container">
+        <div className={`dashboard-container ${(isModalOpen || commentMovie || viewMovie) ? 'modal-active' : ''}`}>
             <Sidebar
                 activeTab={activeTab}
                 setActiveTab={setActiveTab}
@@ -58,7 +82,14 @@ function App() {
                     topSearchResults={topSearchQuery ? filteredMovies : []}
                 />
 
-                <MovieGrid movies={currentMovies} toggleFavorite={toggleFavorite} />
+                <MovieGrid
+                    movies={currentMovies}
+                    toggleFavorite={toggleFavorite}
+                    addComment={addComment}
+                    onComment={(movie) => setCommentMovie(movie)}
+                    onView={(movie) => setViewMovie(movie)}
+                    gridRef={gridRef}
+                />
 
                 <Pagination
                     currentPage={currentPage}
@@ -72,6 +103,21 @@ function App() {
                     onClose={() => setIsModalOpen(false)}
                     onAdd={addMovie}
                     TMDB_GENRES={TMDB_GENRES}
+                />
+            )}
+
+            {commentMovie && (
+                <CommentModal
+                    movie={liveCommentMovie}
+                    onClose={() => setCommentMovie(null)}
+                    onSubmit={(text) => { addComment(commentMovie.id, text); setCommentMovie(null); }}
+                />
+            )}
+
+            {viewMovie && (
+                <ViewCommentsModal
+                    movie={liveViewMovie}
+                    onClose={() => setViewMovie(null)}
                 />
             )}
         </div>
