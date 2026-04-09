@@ -13,7 +13,10 @@ function MovieGrid({ movies, toggleFavorite, gridRef }) {
                 ))
             ) : (
                 <div className="empty-state">
-                    No movies found. Try adjusting your filters or search.
+                    <i className="fas fa-film"></i>
+                    <h2>No movies tracked yet</h2>
+                    <p>Hit <strong>Add Movie</strong> to start building your watchlist!</p>
+                    <i className="fas fa-popcorn"></i>
                 </div>
             )}
         </div>

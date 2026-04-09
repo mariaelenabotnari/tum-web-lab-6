@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './style.css';
 import Sidebar from './components/Sidebar';
 import TopBar from './components/TopBar';
@@ -8,19 +8,8 @@ import AddMovieModal from './components/AddMovieModal';
 import { useMovies } from './hooks/useMovies';
 import { TMDB_GENRES } from './constants/tmdbGenres';
 
-const initialMovies = Array.from({ length: 12 }, (_, i) => ({
-    id: i + 1,
-    title: `Awesome Movie ${i + 1}`,
-    rating: Math.floor(Math.random() * 4) + 6,
-    genre: ['Action', 'Sci-Fi', 'Drama', 'Comedy', 'Thriller'][Math.floor(Math.random() * 5)],
-    year: Math.floor(Math.random() * 24) + 2000,
-    image: `https://picsum.photos/seed/${i + 10}/400/600`,
-    isFavorite: false,
-    comments: []
-}));
-
 function App() {
-    const { movies, toggleFavorite, addMovie } = useMovies(initialMovies);
+    const { movies, toggleFavorite, addMovie } = useMovies();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [topSearchQuery, setTopSearchQuery] = useState('');
@@ -28,19 +17,38 @@ function App() {
     const [currentPage, setCurrentPage] = useState(1);
     const moviesPerPage = 6;
 
+    const [activeTab, setActiveTab] = useState('all');
+    const [isDarkMode, setIsDarkMode] = useState(localStorage.getItem('theme') === 'dark');
+    const [ratingFilter, setRatingFilter] = useState('all');
 
-    const filteredMovies = movies.filter(m =>
-        m.title.toLowerCase().includes(topSearchQuery.toLowerCase())
-    );
+    const filteredMovies = movies.filter(m => {
+        if (activeTab === 'favorites' && !m.isFavorite) return false;
+        if (ratingFilter !== 'all' && m.rating < parseInt(ratingFilter)) return false;
+        if (topSearchQuery && !m.title.toLowerCase().includes(topSearchQuery.toLowerCase())) return false;
+        return true;
+    });
 
     const indexOfLast = currentPage * moviesPerPage;
     const indexOfFirst = indexOfLast - moviesPerPage;
     const currentMovies = filteredMovies.slice(indexOfFirst, indexOfLast);
     const totalPages = Math.ceil(filteredMovies.length / moviesPerPage);
 
+    useEffect(() => {
+        document.body.className = isDarkMode ? 'dark-theme' : '';
+        localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+    }, [isDarkMode]);
+
     return (
         <div className="dashboard-container">
-            <Sidebar />
+            <Sidebar
+                activeTab={activeTab}
+                setActiveTab={setActiveTab}
+                ratingFilter={ratingFilter}
+                setRatingFilter={setRatingFilter}
+                isDarkMode={isDarkMode}
+                setIsDarkMode={setIsDarkMode}
+                setCurrentPage={setCurrentPage}
+            />
 
             <main className="main-content">
                 <TopBar

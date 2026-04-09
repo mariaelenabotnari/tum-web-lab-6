@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
 
 export function useMovies(initialMovies) {
-    const [movies, setMovies] = useState(initialMovies);
+    const [movies, setMovies] = useState(() => {
+        const saved = localStorage.getItem("movies");
+        return saved ? JSON.parse(saved) : [];
+    });
 
     const toggleFavorite = (id) => {
         setMovies(prev =>
