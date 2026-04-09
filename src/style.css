@@ -421,3 +421,139 @@ body {
   color: var(--text-secondary);
   font-size: 1.1rem;
 }
+
+.search-container {
+  position: relative;
+}
+
+.search-results {
+  position: absolute;
+  top: 60px;
+  left: 0;
+  width: 100%;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  z-index: 200;
+  overflow: hidden;
+}
+
+.search-item {
+  padding: 12px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.search-item:hover {
+  background: var(--sidebar-hover);
+}
+
+/* MODAL */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  padding: 20px;
+}
+
+.modal {
+  background: var(--card-bg);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 480px;
+  padding: 32px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.modal h3 {
+  margin: 0 0 4px 0;
+  font-size: 1.3rem;
+  text-align: center;
+}
+
+.modal-search-results {
+  max-height: 280px;
+  overflow-y: auto;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  background: var(--card-bg);
+}
+
+.modal-search-results .search-item {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 14px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border-color);
+  transition: background 0.15s;
+}
+
+.modal-search-results .search-item:last-child {
+  border-bottom: none;
+}
+
+.modal-search-results .search-item:hover {
+  background: var(--sidebar-hover);
+}
+
+.modal input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  background: var(--main-bg);
+  color: var(--text-main);
+  font-size: 1rem;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  font-size: 1.4rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-secondary);
+  line-height: 1;
+}
+
+.modal-close:hover {
+  color: var(--text-main);
+}
+
+.search-results {
+  max-height: 250px;
+  overflow-y: auto;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+}
+
+.search-item {
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-item:hover {
+  background: var(--sidebar-hover);
+}
+
+.blurred main,
+.blurred .sidebar {
+  filter: blur(4px);
+  pointer-events: none;
+}

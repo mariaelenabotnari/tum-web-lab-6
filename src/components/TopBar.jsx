@@ -1,24 +1,29 @@
-function TopBar({ searchQuery, setSearchQuery, handleAddMovie, setCurrentPage }) {
+import React from 'react';
+
+function TopBar({ openModal, topSearchQuery, handleTopSearch, topSearchResults }) {
     return (
-        <header className="top-bar">
+        <div className="top-bar">
             <div className="search-container">
-                <i className="fas fa-search search-icon"></i>
                 <input
                     type="text"
                     className="search-input"
-                    placeholder="Find whatever you want..."
-                    value={searchQuery}
-                    onChange={(e) => {
-                        setSearchQuery(e.target.value);
-                        setCurrentPage(1);
-                    }}
+                    placeholder="Search movies in your library..."
+                    value={topSearchQuery}
+                    onChange={(e) => handleTopSearch(e.target.value)}
                 />
+                {topSearchResults.length > 0 && (
+                    <div className="search-results">
+                        {topSearchResults.map(movie => (
+                            <div key={movie.id} className="search-item">{movie.title}</div>
+                        ))}
+                    </div>
+                )}
             </div>
 
-            <button className="btn-primary" onClick={handleAddMovie}>
-                <i className="fas fa-plus"></i> Add Movie
+            <button className="btn-primary" onClick={openModal}>
+                Add Movie
             </button>
-        </header>
+        </div>
     );
 }
 
