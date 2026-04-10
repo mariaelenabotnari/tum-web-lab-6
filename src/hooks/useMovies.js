@@ -24,9 +24,30 @@ export function useMovies() {
         ));
     };
 
+    const editComment = (movieId, commentIndex, newText) => {
+        setMovies(prev => prev.map(m =>
+            m.id === movieId
+                ? {
+                    ...m,
+                    comments: m.comments.map((c, i) =>
+                        i === commentIndex ? { ...c, text: newText } : c
+                    )
+                }
+                : m
+        ));
+    };
+
+    const deleteComment = (movieId, commentIndex) => {
+        setMovies(prev => prev.map(m =>
+            m.id === movieId
+                ? { ...m, comments: m.comments.filter((_, i) => i !== commentIndex) }
+                : m
+        ));
+    };
+
     useEffect(() => {
         localStorage.setItem("movies", JSON.stringify(movies));
     }, [movies]);
 
-    return { movies, setMovies, toggleFavorite, addMovie, addComment };
+    return { movies, setMovies, toggleFavorite, addMovie, addComment, editComment, deleteComment };
 }

@@ -11,7 +11,7 @@ import ViewCommentsModal from './components/ViewCommentsModal';
 import { TMDB_GENRES } from './constants/tmdbGenres';
 
 function App() {
-    const { movies, toggleFavorite, addMovie, addComment } = useMovies();
+    const { movies, toggleFavorite, addMovie, addComment, editComment, deleteComment } = useMovies();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [topSearchQuery, setTopSearchQuery] = useState('');
@@ -118,6 +118,8 @@ function App() {
                 <ViewCommentsModal
                     movie={liveViewMovie}
                     onClose={() => setViewMovie(null)}
+                    onEdit={(index, newText) => editComment(viewMovie.id, index, newText)}
+                    onDelete={(index) => deleteComment(viewMovie.id, index)}
                 />
             )}
         </div>
