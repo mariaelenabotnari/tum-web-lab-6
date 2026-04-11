@@ -8,10 +8,11 @@ import AddMovieModal from './components/AddMovieModal';
 import { useMovies } from './hooks/useMovies';
 import CommentModal from './components/CommentModal';
 import ViewCommentsModal from './components/ViewCommentsModal';
+import RatingModal from './components/RatingModal';
 import { TMDB_GENRES } from './constants/tmdbGenres';
 
 function App() {
-    const { movies, toggleFavorite, addMovie, addComment, editComment, deleteComment } = useMovies();
+    const { movies, toggleFavorite, addMovie, addComment, editComment, deleteComment, setRating } = useMovies();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [topSearchQuery, setTopSearchQuery] = useState('');
@@ -25,7 +26,7 @@ function App() {
 
     const filteredMovies = movies.filter(m => {
         if (activeTab === 'favorites' && !m.isFavorite) return false;
-        if (ratingFilter !== 'all' && m.rating < parseInt(ratingFilter)) return false;
+        if (ratingFilter !== 'all' && (m.rating === null || m.rating < parseInt(ratingFilter))) return false;
         if (topSearchQuery && !m.title.toLowerCase().includes(topSearchQuery.toLowerCase())) return false;
         return true;
     });
@@ -40,6 +41,9 @@ function App() {
 
     const liveCommentMovie = movies.find(m => m.id === commentMovie?.id);
     const liveViewMovie = movies.find(m => m.id === viewMovie?.id);
+
+    const [rateMovie, setRateMovie] = useState(null);
+    const liveRateMovie = movies.find(m => m.id === rateMovie?.id);
 
     useEffect(() => {
         document.body.className = isDarkMode ? 'dark-theme' : '';
@@ -63,7 +67,7 @@ function App() {
     }, []);
 
     return (
-        <div className={`dashboard-container ${(isModalOpen || commentMovie || viewMovie) ? 'modal-active' : ''}`}>
+        <div className={`dashboard-container ${(isModalOpen || commentMovie || viewMovie || rateMovie) ? 'modal-active' : ''}`}>
             <Sidebar
                 activeTab={activeTab}
                 setActiveTab={setActiveTab}
@@ -89,6 +93,7 @@ function App() {
                     onComment={(movie) => setCommentMovie(movie)}
                     onView={(movie) => setViewMovie(movie)}
                     gridRef={gridRef}
+                    onRate={(movie) => setRateMovie(movie)}
                 />
 
                 <Pagination
@@ -122,6 +127,15 @@ function App() {
                     onDelete={(index) => deleteComment(viewMovie.id, index)}
                 />
             )}
+
+            {rateMovie && (
+                <RatingModal
+                    movie={liveRateMovie}
+                    onClose={() => setRateMovie(null)}
+                    onSubmit={(rating) => { setRating(rateMovie.id, rating); setRateMovie(null); }}
+                />
+            )}
+
         </div>
     );
 }

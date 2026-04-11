@@ -760,3 +760,124 @@ body {
   padding: 8px 16px;
   font-size: 0.85rem;
 }
+
+/* ============================================================
+   RATING MODAL
+   ============================================================ */
+.rating-btn {
+  background: rgba(243, 156, 18, 0.1);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.rating-btn:hover {
+  background: rgba(243, 156, 18, 0.25);
+  transform: translateY(-1px);
+}
+
+.rating-btn.unrated {
+  color: var(--text-secondary);
+  background: var(--main-bg);
+  border: 1px dashed var(--border-color);
+}
+
+.rating-btn.unrated:hover {
+  border-color: var(--rating-color);
+  color: var(--rating-color);
+  background: rgba(243, 156, 18, 0.1);
+}
+
+.rating-edit-icon {
+  font-size: 0.7rem;
+  opacity: 0.6;
+  margin-left: 2px;
+}
+
+.rating-display {
+  text-align: center;
+  line-height: 1;
+}
+
+.rating-number {
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: var(--rating-color);
+}
+
+.rating-out-of {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.rating-slider-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.rating-slider-wrap .fa-face-frown {
+  color: var(--text-secondary);
+  font-size: 1.3rem;
+}
+
+.rating-slider-wrap .fa-face-grin-stars {
+  color: var(--rating-color);
+  font-size: 1.3rem;
+}
+
+.rating-slider {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--border-color);
+  outline: none;
+  cursor: pointer;
+}
+
+.rating-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--rating-color);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(243, 156, 18, 0.4);
+  transition: transform 0.15s ease;
+}
+
+.rating-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.rating-slider::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--rating-color);
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 8px rgba(243, 156, 18, 0.4);
+}
+
+.rating-stars-preview {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  font-size: 1.2rem;
+  color: var(--rating-color);
+  cursor: pointer;
+}
+
+.rating-stars-preview .far {
+  color: var(--border-color);
+}
+
+.rating-stars-preview i:hover {
+  transform: scale(1.2);
+  transition: transform 0.1s ease;
+}

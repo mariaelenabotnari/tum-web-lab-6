@@ -8,7 +8,7 @@ function AddMovieModal({ onClose, onAdd, TMDB_GENRES }) {
         const movie = {
             id: Date.now(),
             title: item.title || item.name,
-            rating: item.vote_average ? Math.round(item.vote_average * 10) / 10 : 0,
+            rating: null,
             genre: TMDB_GENRES[item.genre_ids?.[0]] || "Unknown",
             year: (item.release_date || item.first_air_date)?.slice(0, 4) || "N/A",
             image: item.poster_path

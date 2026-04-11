@@ -45,9 +45,15 @@ export function useMovies() {
         ));
     };
 
+    const setRating = (id, rating) => {
+        setMovies(prev => prev.map(m =>
+            m.id === id ? { ...m, rating } : m
+        ));
+    };
+
     useEffect(() => {
         localStorage.setItem("movies", JSON.stringify(movies));
     }, [movies]);
 
-    return { movies, setMovies, toggleFavorite, addMovie, addComment, editComment, deleteComment };
+    return { movies, setMovies, toggleFavorite, addMovie, addComment, editComment, deleteComment, setRating };
 }
