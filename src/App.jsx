@@ -5,24 +5,34 @@ import TopBar from './components/TopBar';
 import MovieGrid from './components/MovieGrid';
 import Pagination from './components/Pagination';
 import AddMovieModal from './components/AddMovieModal';
-import { useMovies } from './hooks/useMovies';
 import CommentModal from './components/CommentModal';
 import ViewCommentsModal from './components/ViewCommentsModal';
 import RatingModal from './components/RatingModal';
+import { useMovies } from './hooks/useMovies';
 import { TMDB_GENRES } from './constants/tmdbGenres';
 
 function App() {
+
     const { movies, toggleFavorite, addMovie, addComment, editComment, deleteComment, setRating } = useMovies();
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [topSearchQuery, setTopSearchQuery] = useState('');
-
-    const [currentPage, setCurrentPage] = useState(1);
+    const [isDarkMode, setIsDarkMode]     = useState(localStorage.getItem('theme') === 'dark');
+    const [activeTab, setActiveTab]       = useState('all');
+    const [ratingFilter, setRatingFilter] = useState('all');
+    const [currentPage, setCurrentPage]   = useState(1);
     const [moviesPerPage, setMoviesPerPage] = useState(6);
 
-    const [activeTab, setActiveTab] = useState('all');
-    const [isDarkMode, setIsDarkMode] = useState(localStorage.getItem('theme') === 'dark');
-    const [ratingFilter, setRatingFilter] = useState('all');
+    const [topSearchQuery, setTopSearchQuery] = useState('');
+
+    const [isModalOpen, setIsModalOpen]   = useState(false);
+    const [commentMovie, setCommentMovie] = useState(null);
+    const [viewMovie, setViewMovie]       = useState(null);
+    const [rateMovie, setRateMovie]       = useState(null);
+
+    const liveCommentMovie = movies.find(m => m.id === commentMovie?.id);
+    const liveViewMovie    = movies.find(m => m.id === viewMovie?.id);
+    const liveRateMovie    = movies.find(m => m.id === rateMovie?.id);
+
+    const anyModalOpen = isModalOpen || commentMovie || viewMovie || rateMovie;
 
     const filteredMovies = movies.filter(m => {
         if (activeTab === 'favorites' && !m.isFavorite) return false;
@@ -32,26 +42,17 @@ function App() {
         return true;
     });
 
-    const indexOfLast = currentPage * moviesPerPage;
-    const indexOfFirst = indexOfLast - moviesPerPage;
-    const currentMovies = filteredMovies.slice(indexOfFirst, indexOfLast);
-    const totalPages = Math.ceil(filteredMovies.length / moviesPerPage);
+    const indexOfLast    = currentPage * moviesPerPage;
+    const indexOfFirst   = indexOfLast - moviesPerPage;
+    const currentMovies  = filteredMovies.slice(indexOfFirst, indexOfLast);
+    const totalPages     = Math.ceil(filteredMovies.length / moviesPerPage);
 
-    const [commentMovie, setCommentMovie] = useState(null);
-    const [viewMovie, setViewMovie] = useState(null);
-
-    const liveCommentMovie = movies.find(m => m.id === commentMovie?.id);
-    const liveViewMovie = movies.find(m => m.id === viewMovie?.id);
-
-    const [rateMovie, setRateMovie] = useState(null);
-    const liveRateMovie = movies.find(m => m.id === rateMovie?.id);
+    const gridRef = useRef(null);
 
     useEffect(() => {
         document.body.className = isDarkMode ? 'dark-theme' : '';
         localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
     }, [isDarkMode]);
-
-    const gridRef = useRef(null);
 
     useEffect(() => {
         const calculateRows = () => {
@@ -68,7 +69,8 @@ function App() {
     }, []);
 
     return (
-        <div className={`dashboard-container ${(isModalOpen || commentMovie || viewMovie || rateMovie) ? 'modal-active' : ''}`}>
+        <div className={`dashboard-container ${anyModalOpen ? 'modal-active' : ''}`}>
+
             <Sidebar
                 activeTab={activeTab}
                 setActiveTab={setActiveTab}
@@ -82,9 +84,8 @@ function App() {
             <main className="main-content">
                 <TopBar
                     openModal={() => setIsModalOpen(true)}
-                    topSearchQuery={topSearchQuery}
-                    handleTopSearch={setTopSearchQuery}
-                    topSearchResults={topSearchQuery ? filteredMovies : []}
+                    handleTopSearch={(q) => setTopSearchQuery(q)}
+                    allMovies={movies}
                 />
 
                 <MovieGrid
