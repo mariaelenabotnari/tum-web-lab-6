@@ -1,4 +1,4 @@
-function MovieCard({ movie, toggleFavorite }) {
+function MovieCard({ movie, toggleFavorite, onComment, onView, onRate }) {
     return (
         <div className="movie-card">
             <img src={movie.image} alt={movie.title} className="movie-poster" />
@@ -6,9 +6,16 @@ function MovieCard({ movie, toggleFavorite }) {
             <div className="movie-info">
                 <div className="movie-header">
                     <h3>{movie.title}</h3>
-                    <span className="rating-badge">
-            <i className="fas fa-star"></i> {movie.rating}/10
-          </span>
+                    {movie.rating ? (
+                        <button className="rating-badge rating-btn" onClick={() => onRate(movie)}>
+                            <i className="fas fa-star"></i> {movie.rating}/10
+                            <i className="fas fa-pen rating-edit-icon"></i>
+                        </button>
+                    ) : (
+                        <button className="rating-badge rating-btn unrated" onClick={() => onRate(movie)}>
+                            <i className="far fa-star"></i> Rate
+                        </button>
+                    )}
                 </div>
 
                 <div className="movie-meta">
@@ -17,10 +24,10 @@ function MovieCard({ movie, toggleFavorite }) {
                 </div>
 
                 <div className="comment-actions">
-                    <button className="btn-secondary">
+                    <button className="btn-secondary" onClick={() => onComment(movie)}>
                         <i className="fas fa-comment-medical"></i> Comment
                     </button>
-                    <button className="btn-secondary">
+                    <button className="btn-secondary" onClick={() => onView(movie)}>
                         <i className="fas fa-comments"></i> View ({movie.comments.length})
                     </button>
                 </div>

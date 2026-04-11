@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
-export function useMovies(initialMovies) {
+export function useMovies() {
     const [movies, setMovies] = useState(() => {
         const saved = localStorage.getItem("movies");
         return saved ? JSON.parse(saved) : [];
@@ -16,14 +16,44 @@ export function useMovies(initialMovies) {
         setMovies(prev => [movie, ...prev]);
     };
 
-    useEffect(() => {
-        const saved = localStorage.getItem("movies");
-        if (saved) setMovies(JSON.parse(saved));
-    }, []);
+    const addComment = (id, text) => {
+        setMovies(prev => prev.map(m =>
+            m.id === id
+                ? { ...m, comments: [...m.comments, { text, date: new Date().toLocaleDateString() }] }
+                : m
+        ));
+    };
+
+    const editComment = (movieId, commentIndex, newText) => {
+        setMovies(prev => prev.map(m =>
+            m.id === movieId
+                ? {
+                    ...m,
+                    comments: m.comments.map((c, i) =>
+                        i === commentIndex ? { ...c, text: newText } : c
+                    )
+                }
+                : m
+        ));
+    };
+
+    const deleteComment = (movieId, commentIndex) => {
+        setMovies(prev => prev.map(m =>
+            m.id === movieId
+                ? { ...m, comments: m.comments.filter((_, i) => i !== commentIndex) }
+                : m
+        ));
+    };
+
+    const setRating = (id, rating) => {
+        setMovies(prev => prev.map(m =>
+            m.id === id ? { ...m, rating } : m
+        ));
+    };
 
     useEffect(() => {
         localStorage.setItem("movies", JSON.stringify(movies));
     }, [movies]);
 
-    return { movies, setMovies, toggleFavorite, addMovie };
+    return { movies, setMovies, toggleFavorite, addMovie, addComment, editComment, deleteComment, setRating };
 }

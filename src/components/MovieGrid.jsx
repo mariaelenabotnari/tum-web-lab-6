@@ -1,6 +1,6 @@
 import MovieCard from "./MovieCard";
 
-function MovieGrid({ movies, toggleFavorite, gridRef }) {
+function MovieGrid({ movies, toggleFavorite, onComment, onView, onRate, gridRef }) {
     return (
         <div className="movie-grid" ref={gridRef}>
             {movies.length > 0 ? (
@@ -9,6 +9,9 @@ function MovieGrid({ movies, toggleFavorite, gridRef }) {
                         key={movie.id}
                         movie={movie}
                         toggleFavorite={toggleFavorite}
+                        onComment={onComment}
+                        onView={onView}
+                        onRate={onRate}
                     />
                 ))
             ) : (
