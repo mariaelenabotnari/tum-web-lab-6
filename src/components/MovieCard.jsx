@@ -1,8 +1,12 @@
-function MovieCard({ movie, toggleFavorite, onComment, onView, onRate }) {
+function MovieCard({ movie, toggleFavorite, onComment, onView, onRate, onDelete }) {
     return (
         <div className="movie-card">
-            <img src={movie.image} alt={movie.title} className="movie-poster" />
-
+            <div className="movie-poster-wrap">
+                <img src={movie.image} alt={movie.title} className="movie-poster" />
+                <button className="btn-delete-movie" onClick={() => onDelete(movie)}>
+                    <i className="fas fa-times"></i>
+                </button>
+            </div>
             <div className="movie-info">
                 <div className="movie-header">
                     <h3>{movie.title}</h3>

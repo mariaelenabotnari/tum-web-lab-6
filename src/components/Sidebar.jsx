@@ -5,11 +5,12 @@ function Sidebar({
                      setRatingFilter,
                      isDarkMode,
                      setIsDarkMode,
-                     setCurrentPage
+                     setCurrentPage,
+                     onHome
                  }) {
     return (
         <aside className="sidebar">
-            <div className="logo">
+            <div className="logo" onClick={onHome} style={{ cursor: 'pointer' }}>
                 <i className="fas fa-video"></i> CINETRACK
             </div>
 

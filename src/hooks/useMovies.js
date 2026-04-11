@@ -16,6 +16,10 @@ export function useMovies() {
         setMovies(prev => [movie, ...prev]);
     };
 
+    const deleteMovie = (id) => {
+        setMovies(prev => prev.filter(m => m.id !== id));
+    };
+
     const addComment = (id, text) => {
         setMovies(prev => prev.map(m =>
             m.id === id
@@ -55,5 +59,5 @@ export function useMovies() {
         localStorage.setItem("movies", JSON.stringify(movies));
     }, [movies]);
 
-    return { movies, setMovies, toggleFavorite, addMovie, addComment, editComment, deleteComment, setRating };
+    return { movies, setMovies, toggleFavorite, addMovie, addComment, editComment, deleteComment, setRating, deleteMovie };
 }

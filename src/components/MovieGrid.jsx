@@ -1,6 +1,6 @@
 import MovieCard from "./MovieCard";
 
-function MovieGrid({ movies, toggleFavorite, onComment, onView, onRate, gridRef, isFiltered }) {
+function MovieGrid({ movies, toggleFavorite, onComment, onView, onRate, onDelete, gridRef, isFiltered }) {
     return (
         <div className="movie-grid" ref={gridRef}>
             {movies.length > 0 ? (
@@ -12,6 +12,7 @@ function MovieGrid({ movies, toggleFavorite, onComment, onView, onRate, gridRef,
                         onComment={onComment}
                         onView={onView}
                         onRate={onRate}
+                        onDelete={onDelete}
                     />
                 ))
             ) : isFiltered ? (

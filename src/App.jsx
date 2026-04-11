@@ -9,11 +9,12 @@ import CommentModal from './components/CommentModal';
 import ViewCommentsModal from './components/ViewCommentsModal';
 import RatingModal from './components/RatingModal';
 import { useMovies } from './hooks/useMovies';
+import ConfirmModal from './components/ConfirmModal.jsx';
 import { TMDB_GENRES } from './constants/tmdbGenres';
 
 function App() {
 
-    const { movies, toggleFavorite, addMovie, addComment, editComment, deleteComment, setRating } = useMovies();
+    const { movies, toggleFavorite, addMovie, addComment, editComment, deleteComment, setRating, deleteMovie } = useMovies();
 
     const [isDarkMode, setIsDarkMode]     = useState(localStorage.getItem('theme') === 'dark');
     const [activeTab, setActiveTab]       = useState('all');
@@ -32,7 +33,10 @@ function App() {
     const liveViewMovie    = movies.find(m => m.id === viewMovie?.id);
     const liveRateMovie    = movies.find(m => m.id === rateMovie?.id);
 
-    const anyModalOpen = isModalOpen || commentMovie || viewMovie || rateMovie;
+    const [searchResetKey, setSearchResetKey] = useState(0);
+    const [confirmDeleteMovie, setConfirmDeleteMovie] = useState(null);
+
+    const anyModalOpen = isModalOpen || commentMovie || viewMovie || rateMovie || confirmDeleteMovie;
 
     const filteredMovies = movies.filter(m => {
         if (activeTab === 'favorites' && !m.isFavorite) return false;
@@ -79,6 +83,13 @@ function App() {
                 isDarkMode={isDarkMode}
                 setIsDarkMode={setIsDarkMode}
                 setCurrentPage={setCurrentPage}
+                onHome={() => {
+                    setActiveTab('all');
+                    setCurrentPage(1);
+                    setRatingFilter('all');
+                    setTopSearchQuery('');
+                    setSearchResetKey(k => k + 1);
+                }}
             />
 
             <main className="main-content">
@@ -86,6 +97,7 @@ function App() {
                     openModal={() => setIsModalOpen(true)}
                     handleTopSearch={(q) => setTopSearchQuery(q)}
                     allMovies={movies}
+                    key={searchResetKey}
                 />
 
                 <MovieGrid
@@ -95,6 +107,7 @@ function App() {
                     onView={(movie) => setViewMovie(movie)}
                     onRate={(movie) => setRateMovie(movie)}
                     gridRef={gridRef}
+                    onDelete={(movie) => setConfirmDeleteMovie(movie)}
                     isFiltered={activeTab !== 'all' || ratingFilter !== 'all' || topSearchQuery !== ''}
                 />
 
@@ -135,6 +148,17 @@ function App() {
                     movie={liveRateMovie}
                     onClose={() => setRateMovie(null)}
                     onSubmit={(rating) => { setRating(rateMovie.id, rating); setRateMovie(null); }}
+                />
+            )}
+
+            {confirmDeleteMovie && (
+                <ConfirmModal
+                    title="Delete Movie"
+                    message={`Are you sure you want to remove "${confirmDeleteMovie.title}" from your library?`}
+                    icon="fas fa-film"
+                    confirmLabel="Delete Movie"
+                    onConfirm={() => { deleteMovie(confirmDeleteMovie.id); setConfirmDeleteMovie(null); }}
+                    onCancel={() => setConfirmDeleteMovie(null)}
                 />
             )}
 
