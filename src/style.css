@@ -157,6 +157,12 @@ body {
   cursor: pointer;
 }
 
+.filter-select option {
+  background: var(--card-bg);
+  color: var(--text-main);
+  padding: 8px;
+}
+
 .theme-toggle {
   margin: auto 2rem 2rem 2rem;
   background: var(--sidebar-active-bg);
@@ -881,3 +887,4 @@ body {
   transform: scale(1.2);
   transition: transform 0.1s ease;
 }
+

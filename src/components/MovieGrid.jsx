@@ -1,6 +1,6 @@
 import MovieCard from "./MovieCard";
 
-function MovieGrid({ movies, toggleFavorite, onComment, onView, onRate, gridRef }) {
+function MovieGrid({ movies, toggleFavorite, onComment, onView, onRate, gridRef, isFiltered }) {
     return (
         <div className="movie-grid" ref={gridRef}>
             {movies.length > 0 ? (
@@ -14,6 +14,12 @@ function MovieGrid({ movies, toggleFavorite, onComment, onView, onRate, gridRef 
                         onRate={onRate}
                     />
                 ))
+            ) : isFiltered ? (
+                <div className="empty-state">
+                    <i className="fas fa-filter"></i>
+                    <h2>No movies match your filters</h2>
+                    <p>Try adjusting your search or rating filter.</p>
+                </div>
             ) : (
                 <div className="empty-state">
                     <i className="fas fa-film"></i>

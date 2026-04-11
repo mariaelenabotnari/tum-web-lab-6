@@ -31,17 +31,21 @@ function Sidebar({
                 </ul>
 
                 <div className="sidebar-filter">
-                    <label><i className="fas fa-filter"></i> Min Rating</label>
+                    <label><i className="fas fa-filter"></i> Filter Rating</label>
                     <select
                         className="filter-select"
                         value={ratingFilter}
                         onChange={(e) => { setRatingFilter(e.target.value); setCurrentPage(1); }}
                     >
                         <option value="all">All Ratings</option>
+                        <option value="10">10 Stars</option>
                         <option value="9">9+ Stars</option>
                         <option value="8">8+ Stars</option>
                         <option value="7">7+ Stars</option>
                         <option value="6">6+ Stars</option>
+                        <option value="5">5+ Stars</option>
+                        <option value="4">4+ Stars</option>
+                        <option value="unrated">Unrated only</option>
                     </select>
                 </div>
             </nav>

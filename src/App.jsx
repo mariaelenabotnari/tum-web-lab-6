@@ -26,7 +26,8 @@ function App() {
 
     const filteredMovies = movies.filter(m => {
         if (activeTab === 'favorites' && !m.isFavorite) return false;
-        if (ratingFilter !== 'all' && (m.rating === null || m.rating < parseInt(ratingFilter))) return false;
+        if (ratingFilter === 'unrated' && m.rating !== null) return false;
+        if (ratingFilter !== 'all' && ratingFilter !== 'unrated' && (m.rating === null || m.rating < parseInt(ratingFilter))) return false;
         if (topSearchQuery && !m.title.toLowerCase().includes(topSearchQuery.toLowerCase())) return false;
         return true;
     });
@@ -89,11 +90,11 @@ function App() {
                 <MovieGrid
                     movies={currentMovies}
                     toggleFavorite={toggleFavorite}
-                    addComment={addComment}
                     onComment={(movie) => setCommentMovie(movie)}
                     onView={(movie) => setViewMovie(movie)}
-                    gridRef={gridRef}
                     onRate={(movie) => setRateMovie(movie)}
+                    gridRef={gridRef}
+                    isFiltered={activeTab !== 'all' || ratingFilter !== 'all' || topSearchQuery !== ''}
                 />
 
                 <Pagination
