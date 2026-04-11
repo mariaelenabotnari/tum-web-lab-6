@@ -129,8 +129,8 @@ body {
 }
 
 .sidebar-filter {
-  margin: 2rem;
-  padding: 1.5rem;
+  margin: 1rem 1.2rem;
+  padding: 1.2rem;
   background: var(--sidebar-active-bg);
   border-radius: 12px;
   display: flex;
@@ -184,6 +184,111 @@ body {
   background: var(--sidebar-hover);
 }
 
+/* ============================================================
+   FILTER DROPDOWN
+   ============================================================ */
+.filter-dropdown {
+  position: relative;
+  width: 100%;
+}
+
+.filter-dropdown-btn {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  color: var(--text-main);
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: 0.2s;
+}
+
+.filter-dropdown-btn:hover {
+  border-color: var(--btn-primary);
+}
+
+.filter-dropdown-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 100%;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-sizing: border-box;
+}
+
+.range-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.range-value-badge {
+  background: var(--btn-primary);
+  color: var(--btn-primary-text);
+  font-weight: 800;
+  font-size: 0.85rem;
+  padding: 3px 10px;
+  border-radius: 6px;
+  min-width: 28px;
+  text-align: center;
+}
+
+.range-divider {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+}
+
+.range-slider-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.range-slider-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.filter-dropdown-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.filter-action-btn {
+  flex: 1;
+  font-size: 0.72rem !important;
+  padding: 6px 4px !important;
+  justify-content: center;
+  gap: 4px;
+  line-height: 1.2;
+  min-width: 0;
+}
+
+.filter-action-btn i {
+  font-size: 0.65rem !important;
+  flex-shrink: 0;
+}
 
 /* ============================================================
    TOP BAR

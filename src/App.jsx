@@ -40,8 +40,11 @@ function App() {
 
     const filteredMovies = movies.filter(m => {
         if (activeTab === 'favorites' && !m.isFavorite) return false;
-        if (ratingFilter === 'unrated' && m.rating !== null) return false;
-        if (ratingFilter !== 'all' && ratingFilter !== 'unrated' && (m.rating === null || m.rating < parseInt(ratingFilter))) return false;
+        if (ratingFilter?.type === 'unrated' && m.rating !== null) return false;
+        if (ratingFilter?.type === 'range') {
+            if (m.rating === null) return false;
+            if (m.rating < ratingFilter.min || m.rating > ratingFilter.max) return false;
+        }
         if (topSearchQuery && !m.title.toLowerCase().includes(topSearchQuery.toLowerCase())) return false;
         return true;
     });
@@ -86,7 +89,7 @@ function App() {
                 onHome={() => {
                     setActiveTab('all');
                     setCurrentPage(1);
-                    setRatingFilter('all');
+                    setRatingFilter({ type: 'all' });
                     setTopSearchQuery('');
                     setSearchResetKey(k => k + 1);
                 }}
@@ -108,7 +111,7 @@ function App() {
                     onRate={(movie) => setRateMovie(movie)}
                     gridRef={gridRef}
                     onDelete={(movie) => setConfirmDeleteMovie(movie)}
-                    isFiltered={activeTab !== 'all' || ratingFilter !== 'all' || topSearchQuery !== ''}
+                    isFiltered={activeTab !== 'all' || ratingFilter?.type !== 'all' || topSearchQuery !== ''}
                 />
 
                 <Pagination
