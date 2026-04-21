@@ -16,22 +16,22 @@ function App() {
 
     const { movies, toggleFavorite, addMovie, addComment, editComment, deleteComment, setRating, deleteMovie } = useMovies();
 
-    const [isDarkMode, setIsDarkMode]     = useState(localStorage.getItem('theme') === 'dark');
-    const [activeTab, setActiveTab]       = useState('all');
+    const [isDarkMode, setIsDarkMode] = useState(localStorage.getItem('theme') === 'dark');
+    const [activeTab, setActiveTab]  = useState('all');
     const [ratingFilter, setRatingFilter] = useState('all');
     const [currentPage, setCurrentPage]   = useState(1);
     const [moviesPerPage, setMoviesPerPage] = useState(6);
 
     const [topSearchQuery, setTopSearchQuery] = useState('');
 
-    const [isModalOpen, setIsModalOpen]   = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [commentMovie, setCommentMovie] = useState(null);
-    const [viewMovie, setViewMovie]       = useState(null);
-    const [rateMovie, setRateMovie]       = useState(null);
+    const [viewMovie, setViewMovie] = useState(null);
+    const [rateMovie, setRateMovie] = useState(null);
 
     const liveCommentMovie = movies.find(m => m.id === commentMovie?.id);
-    const liveViewMovie    = movies.find(m => m.id === viewMovie?.id);
-    const liveRateMovie    = movies.find(m => m.id === rateMovie?.id);
+    const liveViewMovie = movies.find(m => m.id === viewMovie?.id);
+    const liveRateMovie = movies.find(m => m.id === rateMovie?.id);
 
     const [searchResetKey, setSearchResetKey] = useState(0);
     const [confirmDeleteMovie, setConfirmDeleteMovie] = useState(null);
@@ -49,10 +49,10 @@ function App() {
         return true;
     });
 
-    const indexOfLast    = currentPage * moviesPerPage;
-    const indexOfFirst   = indexOfLast - moviesPerPage;
-    const currentMovies  = filteredMovies.slice(indexOfFirst, indexOfLast);
-    const totalPages     = Math.ceil(filteredMovies.length / moviesPerPage);
+    const indexOfLast= currentPage * moviesPerPage;
+    const indexOfFirst= indexOfLast - moviesPerPage;
+    const currentMovies= filteredMovies.slice(indexOfFirst, indexOfLast);
+    const totalPages= Math.ceil(filteredMovies.length / moviesPerPage);
 
     const gridRef = useRef(null);
 

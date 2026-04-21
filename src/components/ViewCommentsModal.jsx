@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import ConfirmModal from './ConfirmModal';
 
 function ViewCommentsModal({ movie, onClose, onEdit, onDelete }) {
-    const [editingIndex, setEditingIndex]       = useState(null);
-    const [editText, setEditText]               = useState('');
+    const [editingIndex, setEditingIndex] = useState(null);
+    const [editText, setEditText] = useState('');
     const [confirmDeleteIndex, setConfirmDeleteIndex] = useState(null);
 
     useEffect(() => {
