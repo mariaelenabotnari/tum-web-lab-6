@@ -20,7 +20,7 @@ function App() {
     const [activeTab, setActiveTab]  = useState('all');
     const [ratingFilter, setRatingFilter] = useState('all');
     const [currentPage, setCurrentPage]   = useState(1);
-    const [moviesPerPage, setMoviesPerPage] = useState(6);
+    const [moviesPerPage, setMoviesPerPage] = useState(4);
 
     const [topSearchQuery, setTopSearchQuery] = useState('');
 
@@ -65,8 +65,8 @@ function App() {
         const calculateRows = () => {
             if (gridRef.current) {
                 const gridWidth = gridRef.current.offsetWidth;
-                const columns = Math.floor(gridWidth / 330);
-                setMoviesPerPage(Math.max(columns, 1) * 2);
+                const columns = Math.max(Math.floor(gridWidth / 310), 1);
+                setMoviesPerPage(columns * 2);
             }
         };
         const resizeObserver = new ResizeObserver(calculateRows);
